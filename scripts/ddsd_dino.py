@@ -34,7 +34,6 @@ def clear_dino_cache():
 
 def load_dino_model(dino_checkpoint):
     print(f"Initializing GroundingDINO {dino_checkpoint}")
-
     if dino_checkpoint in dino_model_cache:
         dino = dino_model_cache[dino_checkpoint]
         print(f"cached: {dino}")
@@ -79,6 +78,9 @@ def get_grounding_output(model, image, caption, box_threshold):
         outputs = model(image[None], captions=[caption])
     if shared.cmd_opts.lowvram:
         model.to(cpu)
+
+    print("cpu")
+    model.to(cpu)
     logits = outputs["pred_logits"].sigmoid()[0]  # (nq, 256)
     boxes = outputs["pred_boxes"][0]  # (nq, 4)
 
